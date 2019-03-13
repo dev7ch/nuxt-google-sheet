@@ -16,8 +16,9 @@
   </div>
 </template>
 <script>
-const sheetUrl =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQvSeXb1Bovj0AVm-2eWO6Bg1YAaiYFYjhBgqX_y7hD9RxS5vIume8e0yCafalD7SUWRsj74Gx_2cD9/pub?output=csv"
+const sheetUrl = process.env.GOOGLE_CSV_SHEET_URL
+// const sheetUrl =
+//   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQvSeXb1Bovj0AVm-2eWO6Bg1YAaiYFYjhBgqX_y7hD9RxS5vIume8e0yCafalD7SUWRsj74Gx_2cD9/pub?output=csv"
 
 export default {
   data() {
@@ -29,8 +30,7 @@ export default {
   // asyncData(context) {
   //   context.$axios.$get(sheetUrl).then(res => {
   //     context.$store.commit
-  //     return console.log(res)
-  //   })
+  //     return co
   // },
 
   beforeMount() {
@@ -116,17 +116,9 @@ export default {
   },
 
   methods: {
-    prepareData($json) {
-      $json.forEach(function(elem) {
-        this.csvName.push(elem.name)
-        this.csvObj[elem.name] = elem.name
-      })
-    },
-
     async getCsvData($url) {
       if (!this.$store.state.csv) {
         await this.$axios.$get($url).then(res => {
-          console.log(res)
           this.$store.commit("setCsvData", res)
         })
       }
