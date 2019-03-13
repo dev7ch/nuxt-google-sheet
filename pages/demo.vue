@@ -4,7 +4,6 @@
     <Sheet />
     <br />
     <br />
-
     <h3>Simple Chart Test</h3>
     <div id="result-chart" />
     <h3>Import External csv file</h3>
@@ -14,7 +13,9 @@
     <br />
     <pre>
           <ul>
-      <li v-for="(v, key) in csvData" :key="key" v-text="v" />
+      <li v-for="(v, key) in csvData" :key="key">
+            {{ v }}
+      </li>
     </ul>
     </pre>
   </div>
@@ -25,6 +26,10 @@ import Sheet from "~/components/Sheet.vue"
 export default {
   components: {
     Sheet
+  },
+
+  asyncData (context) {
+    return { project: 'nuxt' }
   },
 
   data() {
@@ -45,10 +50,6 @@ export default {
         type: "pie"
       }
     })
-
-    this.$d3.csv(process.env.GOOGLE_CSV_SHEET_URL, data => {
-      this.csvData.push(data)
-    })
   },
 
   mounted() {
@@ -56,6 +57,11 @@ export default {
 
     this.prepareData(this.csvData)
     console.log(this.csvObj)
+
+    this.$d3.csv(process.env.GOOGLE_CSV_SHEET_URL, data => {
+      this.csvData.push(data)
+      console.log(this.csvData)
+    })
 
     this.$c3.generate({
       bindto: "#pizza-chart",
