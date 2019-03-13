@@ -2,16 +2,16 @@
   <div class="page">
     <h3>Simple Chart Test</h3>
     <div id="result-chart" />
-    <h3>Import External csv file</h3>
+    <h3>Demo Chart</h3>
+    <div id="demo-chart" />
     <h3>Pizza Chart</h3>
     <div id="pizza-chart" />
 
-    <pre>
-          <ul v-if="csvData">
-      <li v-for="(v, key) in csvData" :key="key">
+    <h3>Imported External csv file</h3>
+    <pre v-if="csvData">
+      <div v-for="(v, key) in csvData" :key="key">
             {{ v }}
-      </li>
-    </ul>
+      </div>
     </pre>
   </div>
 </template>
@@ -22,14 +22,10 @@ const sheetUrl =
 export default {
   data() {
     return {
-      csvData: [],
-      csvObj: {},
-      csvName: [],
-      csvTopping: []
+      csvData: []
     }
   },
 
-  //
   // asyncData(context) {
   //   context.$axios.$get(sheetUrl).then(res => {
   //     context.$store.commit
@@ -63,25 +59,60 @@ export default {
     //   console.log(this.csvData)
     // })
 
-    this.$d3.csv(sheetUrl, data => {
-      this.csvData.push(data)
-      //console.log(this.csvData)
-    })
-
+    this.$d3
+      .csv(sheetUrl, data => {
+        this.csvData.push(data)
+        //console.log(this.csvData)
+        this.$store.commit("setCsvArray", data)
+      })
+      .then(() => {
+        this.$c3.generate({
+          bindto: "#pizza-chart",
+          data: {
+            type: "bar",
+            json: this.$store.state.csvArray,
+            keys: {
+              x: "number of toppings",
+              value: ["name"]
+            }
+          },
+          axis: {
+            x: {
+              type: "category"
+            },
+            y: {
+              type: "name"
+            }
+          },
+          bar: {
+            width: {
+              ratio: 0.5
+            }
+          }
+        })
+      })
     this.$c3.generate({
-      bindto: "#pizza-chart",
+      bindto: "#demo-chart",
       data: {
-        json: [this.csvData],
-
-        //type: "pie",
-
+        type: "bar",
+        json: [
+          { indicator: "X", total: 100 },
+          { indicator: "Y", total: 200 },
+          { indicator: "Z", total: 300 }
+        ],
         keys: {
-          x: "x",
-          value: ["name", "toppings"]
-        },
-        names: {
-          value0: "value 0 display",
-          value1: "value 1 display"
+          x: "indicator",
+          value: ["total"]
+        }
+      },
+      axis: {
+        x: {
+          type: "category"
+        }
+      },
+      bar: {
+        width: {
+          ratio: 0.5
         }
       }
     })
