@@ -1,6 +1,10 @@
 <template>
   <div class="page">
+    <h3>Sheet Component</h3>
     <Sheet />
+    <br />
+    <br />
+
     <h3>Simple Chart Test</h3>
     <div id="result-chart" />
     <h3>Import External csv file</h3>
@@ -56,11 +60,17 @@ export default {
     this.$c3.generate({
       bindto: "#pizza-chart",
       data: {
-        json: [this.csvObj],
+        json: this.csvData,
 
-        type: "pie",
+        //type: "pie",
+
         keys: {
-          value: this.csvName
+          x: "x",
+          value: ["name", "toppings"]
+        },
+        names: {
+          value0: "value 0 display",
+          value1: "value 1 display"
         }
       }
     })
