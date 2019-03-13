@@ -9,11 +9,11 @@
         Try google sheets and nuxt
       </h2>
       <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
+        <a href="/demo" target="_blank" class="button--green">
+          Demo
         </a>
         <a
-          href="https://github.com/nuxt/nuxt.js"
+          href="https://github.com/dev7ch/nuxt-google-sheet"
           target="_blank"
           class="button--grey"
         >
