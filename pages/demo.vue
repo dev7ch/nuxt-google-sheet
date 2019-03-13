@@ -16,9 +16,8 @@
   </div>
 </template>
 <script>
-const sheetUrl = process.env.GOOGLE_CSV_SHEET_URL
-// const sheetUrl =
-//   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQvSeXb1Bovj0AVm-2eWO6Bg1YAaiYFYjhBgqX_y7hD9RxS5vIume8e0yCafalD7SUWRsj74Gx_2cD9/pub?output=csv"
+const sheetUrl =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQvSeXb1Bovj0AVm-2eWO6Bg1YAaiYFYjhBgqX_y7hD9RxS5vIume8e0yCafalD7SUWRsj74Gx_2cD9/pub?output=csv"
 
 export default {
   data() {
