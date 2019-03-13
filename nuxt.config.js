@@ -17,11 +17,6 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
-
-  env: {
-    GOOGLE_SHEET_KEY: "AIzaSyAO8w6U_KyqktLalnfDEuTBY9zjwBLBdNM"
-  },
-
   /*
    ** Customize the progress-bar color
    */
