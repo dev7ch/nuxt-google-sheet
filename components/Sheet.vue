@@ -1,10 +1,13 @@
 <template>
-  <div id="homepage">
-    <h1>Les dernières Articles</h1>
+  <div>
+    <h1>Play with the store</h1>
     <div v-for="article in articles" :key="article.index()" class="article">
       <h2>{{ article.name }}</h2>
       <p>{{ article.content }}</p>
     </div>
+    <pre>
+      {{ $store.state.csv }}
+    </pre>
   </div>
 </template>
 
@@ -42,6 +45,7 @@ export default {
 
   mounted() {
     console.log(this.articles)
+    console.log(this.$store.state)
   }
 }
 </script>

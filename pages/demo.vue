@@ -1,18 +1,13 @@
 <template>
   <div class="page">
-    <h3>Sheet Component</h3>
-    <Sheet />
-    <br />
-    <br />
     <h3>Simple Chart Test</h3>
     <div id="result-chart" />
     <h3>Import External csv file</h3>
     <h3>Pizza Chart</h3>
     <div id="pizza-chart" />
-    <br />
-    <br />
+
     <pre>
-          <ul>
+          <ul v-if="csvData">
       <li v-for="(v, key) in csvData" :key="key">
             {{ v }}
       </li>
@@ -21,17 +16,10 @@
   </div>
 </template>
 <script>
-import Sheet from "~/components/Sheet.vue"
+const sheetUrl =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQvSeXb1Bovj0AVm-2eWO6Bg1YAaiYFYjhBgqX_y7hD9RxS5vIume8e0yCafalD7SUWRsj74Gx_2cD9/pub?output=csv"
 
 export default {
-  components: {
-    Sheet
-  },
-
-  asyncData (context) {
-    return { project: 'nuxt' }
-  },
-
   data() {
     return {
       csvData: [],
@@ -40,6 +28,15 @@ export default {
       csvTopping: []
     }
   },
+
+  //
+  // asyncData(context) {
+  //   context.$axios.$get(sheetUrl).then(res => {
+  //     context.$store.commit
+  //     return console.log(res)
+  //   })
+  // },
+
   beforeMount() {
     // Simple Chart test
 
@@ -55,18 +52,26 @@ export default {
   mounted() {
     console.log(this.csvData)
 
-    this.prepareData(this.csvData)
-    console.log(this.csvObj)
+    this.getCsvData(sheetUrl)
+    // this.prepareData(this.csvData)
+    // console.log(this.csvObj)
+    //
 
-    this.$d3.csv(process.env.GOOGLE_CSV_SHEET_URL, data => {
+    // // useing .env file
+    // this.$d3.csv(process.env.GOOGLE_CSV_SHEET_URL, data => {
+    //   this.csvData.push(data)
+    //   console.log(this.csvData)
+    // })
+
+    this.$d3.csv(sheetUrl, data => {
       this.csvData.push(data)
-      console.log(this.csvData)
+      //console.log(this.csvData)
     })
 
     this.$c3.generate({
       bindto: "#pizza-chart",
       data: {
-        json: this.csvData,
+        json: [this.csvData],
 
         //type: "pie",
 
@@ -88,6 +93,15 @@ export default {
         this.csvName.push(elem.name)
         this.csvObj[elem.name] = elem.name
       })
+    },
+
+    async getCsvData($url) {
+      if (!this.$store.state.csv) {
+        await this.$axios.$get($url).then(res => {
+          console.log(res)
+          this.$store.commit("setCsvData", res)
+        })
+      }
     }
   }
 }
