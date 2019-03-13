@@ -72,16 +72,13 @@ export default {
             type: "bar",
             json: this.$store.state.csvArray,
             keys: {
-              x: "number of toppings",
-              value: ["name"]
+              x: "name",
+              value: ["number of toppings"]
             }
           },
           axis: {
             x: {
               type: "category"
-            },
-            y: {
-              type: "name"
             }
           },
           bar: {
