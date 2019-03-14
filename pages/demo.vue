@@ -3,7 +3,7 @@
     <h3>Simple Pizza Chart</h3>
     <div id="pizza-chart" />
 
-    <template v-if="$route.query.debug">
+    <template v-if="!!$route.query.debug">
       <h3>Simple C3 Chart Test</h3>
       <div id="result-chart" />
       <h3>Demo Chart</h3>
