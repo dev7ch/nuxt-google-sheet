@@ -4,7 +4,7 @@
     <pre>
       {{ sheetData }}
     </pre>
-    <template v-if="$route.query.debug">
+    <template v-if="$route.query.debug === 'true'">
       <h3>Sheet Info</h3>
       <pre v-if="params">
       {{ sheetInfo }}
