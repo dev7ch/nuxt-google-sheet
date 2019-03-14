@@ -5,6 +5,10 @@ import pkg from "./package"
 export default {
   mode: "universal",
 
+  env: {
+    GOOGLE_SHEET_KEY: process.env.GOOGLE_SHEET_KEY,
+    GOOGLE_CSV_SHEET_URL: process.env.GOOGLE_CSV_SHEET_URL
+  },
   /*
    ** Headers of the page
    */
