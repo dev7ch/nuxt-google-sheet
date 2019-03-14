@@ -1,9 +1,9 @@
 <template>
   <div class="page">
-    <h3>Simple Chart Test</h3>
-    <div id="result-chart" />
-    <h3>Demo Chart</h3>
-    <div id="demo-chart" />
+    <!--<h3>Simple Chart Test</h3>-->
+    <!--<div id="result-chart" />-->
+    <!--<h3>Demo Chart</h3>-->
+    <!--<div id="demo-chart" />-->
     <h3>Pizza Chart</h3>
     <div id="pizza-chart" />
 
@@ -25,6 +25,8 @@ export default {
       csvData: []
     }
   },
+
+  watchQuery: true,
 
   // asyncData(context) {
   //   context.$axios.$get(sheetUrl).then(res => {
