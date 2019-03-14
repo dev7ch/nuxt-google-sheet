@@ -1,23 +1,25 @@
 <template>
   <div class="page">
-    <!--<h3>Simple Chart Test</h3>-->
-    <!--<div id="result-chart" />-->
-    <!--<h3>Demo Chart</h3>-->
-    <!--<div id="demo-chart" />-->
-    <h3>Pizza Chart</h3>
+    <h3>Simple Pizza Chart</h3>
     <div id="pizza-chart" />
 
-    <h3>Imported External csv file</h3>
-    <pre v-if="csvData">
+    <template v-if="$route.query.debug">
+      <h3>Simple C3 Chart Test</h3>
+      <div id="result-chart" />
+      <h3>Demo Chart</h3>
+      <div id="demo-chart" />
+
+      <h3>Imported External csv file</h3>
+      <pre v-if="csvData">
       <div v-for="(v, key) in csvData" :key="key">
             {{ v }}
       </div>
     </pre>
+    </template>
   </div>
 </template>
 <script>
-const sheetUrl =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQvSeXb1Bovj0AVm-2eWO6Bg1YAaiYFYjhBgqX_y7hD9RxS5vIume8e0yCafalD7SUWRsj74Gx_2cD9/pub?output=csv"
+const sheetUrl = process.env.GOOGLE_CSV_SHEET_URL
 
 export default {
   data() {

@@ -1,12 +1,15 @@
 <template>
   <div>
     <h1>Play with Public Sheets API</h1>
-    <pre>
+    <template v-if="$route.query.debug">
+      <pre>
       {{ sheetData }}
-    </pre>
-    <pre v-if="params">
+      </pre>
+      <h3>Sheet Info</h3>
+      <pre v-if="params">
       {{ sheetInfo }}
-    </pre>
+      </pre>
+    </template>
   </div>
 </template>
 
