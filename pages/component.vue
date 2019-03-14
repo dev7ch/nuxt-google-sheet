@@ -6,9 +6,6 @@
 import Sheet from "~/components/Sheet"
 
 export default {
-  // validate({ route }) {
-  //   return !isNaN(+route.query.range)
-  // },
   components: {
     Sheet
   },

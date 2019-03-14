@@ -2,6 +2,27 @@
 
 > Try google sheets and nuxt
 
+## How to use
+
+Define the Range in the url like, for the full range:
+
+
+https://nuxt-google-sheet.netlify.com/component/?range=pizza
+
+... and if you need specific ranges:
+
+https://nuxt-google-sheet.netlify.com/component/?range=pizza%21A1%3AC5
+
+A simple public csv url without google API and no API key can be done like that:
+
+https://nuxt-google-sheet.netlify.com/demo
+
+## Debug mode
+
+By appending `?debug=true` or `?range=pizza&debug=true` in `dev` mode you ll get some more outputs
+
+http://localhost:3000/demo?debug=true
+
 ## Build Setup
 
 ``` bash

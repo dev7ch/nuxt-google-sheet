@@ -59,7 +59,7 @@ export default {
     async getSheetData() {
       let _this = this
       let range =
-        this.$props.params !== null ? this.$props.params : "pizza!A1:A17"
+        this.$props.params !== null ? this.$props.params : "pizza!A1:C17"
       await this.$axios.$get(sheetUrl + "/values/" + range + key).then(res => {
         _this.sheetData = res
       })
