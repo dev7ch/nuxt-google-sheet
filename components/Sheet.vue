@@ -18,8 +18,7 @@
 //  your spreadsheet has to be PUBLIC and SHARED with everybody to be accessed this way
 //  https://sheets.googleapis.com/v4/spreadsheets/{SPREASHEET_ID}/values/{SHEET_TAB_NAME}!{CELLS}?key={GOOGLE_API_KEY}
 
-const sheetUrl =
-  "https://sheets.googleapis.com/v4/spreadsheets/18SHABqiyvh9QbDX0utwxu-ScmRpQ6QFfOAIKMjBg97E"
+const sheetUrl = process.env.GOOGLE_SHEET_API
 const key = "?key=" + process.env.GOOGLE_SHEET_KEY
 
 export default {
@@ -46,6 +45,7 @@ export default {
   mounted() {
     console.log(this.articles)
     console.log(this.$store.state)
+    this.initChart()
   },
 
   methods: {
@@ -62,6 +62,16 @@ export default {
         this.$props.params !== null ? this.$props.params : "pizza!A1:C17"
       await this.$axios.$get(sheetUrl + "/values/" + range + key).then(res => {
         _this.sheetData = res
+      })
+    },
+
+    initChart() {
+      this.$c3.generate({
+        bindto: "#result-chart",
+        data: {
+          columns: [["data1", 30], ["data2", 120]],
+          type: "pie"
+        }
       })
     }
   }

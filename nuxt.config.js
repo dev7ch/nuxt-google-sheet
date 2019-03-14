@@ -5,7 +5,11 @@ import pkg from "./package"
 export default {
   mode: "universal",
 
+  /*
+   ** Redeclaring Nuxt env adds support for netlify env vars
+   */
   env: {
+    GOOGLE_SHEET_API: process.env.GOOGLE_SHEET_API,
     GOOGLE_SHEET_KEY: process.env.GOOGLE_SHEET_KEY,
     GOOGLE_CSV_SHEET_URL: process.env.GOOGLE_CSV_SHEET_URL
   },
@@ -49,8 +53,7 @@ export default {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseUrl:
-      "https://sheets.googleapis.com/v4/spreadsheets/18SHABqiyvh9QbDX0utwxu-ScmRpQ6QFfOAIKMjBg97E/"
+    baseUrl: process.env.GOOGLE_SHEET_API
   },
 
   generate: {
