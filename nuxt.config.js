@@ -53,6 +53,10 @@ export default {
       "https://sheets.googleapis.com/v4/spreadsheets/18SHABqiyvh9QbDX0utwxu-ScmRpQ6QFfOAIKMjBg97E/"
   },
 
+  generate: {
+    routes: ["/demo", "/component"]
+  },
+
   /*
    ** Build configuration
    */
