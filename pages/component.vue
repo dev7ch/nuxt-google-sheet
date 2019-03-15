@@ -1,5 +1,7 @@
 <template>
-  <Sheet :params="$route.query.range" />
+  <div class="container container--width">
+    <Sheet :params="$route.query.range" />
+  </div>
 </template>
 
 <script>

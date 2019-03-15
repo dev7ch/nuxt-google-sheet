@@ -9,15 +9,18 @@
         Try google sheets and nuxt
       </h2>
       <div class="links">
-        <a href="/demo" target="_blank" class="button--green">
+        <a href="/demo" target="_blank" class="button--green btn">
           Demo
         </a>
         <a
           href="https://github.com/dev7ch/nuxt-google-sheet"
           target="_blank"
-          class="button--grey"
+          class="button--grey btn"
         >
           GitHub
+        </a>
+        <a href="/component?range=pizza" class="button--grey btn">
+          Dynamic Component
         </a>
       </div>
     </div>
@@ -34,16 +37,7 @@ export default {
 }
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
+<style lang="scss">
 .title {
   font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -60,9 +54,5 @@ export default {
   color: #526488;
   word-spacing: 5px;
   padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
 }
 </style>
