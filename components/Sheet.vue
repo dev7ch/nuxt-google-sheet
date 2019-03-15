@@ -151,7 +151,6 @@ export default {
           json: [...this.c3Objects],
           keys: {
             x: this.c3Objects.name,
-            //y: labels[1], // it's possible to specify 'x' when category axis
             value: labels.filter(item => !forDeletion.includes(item))
           },
           type: "bar"
