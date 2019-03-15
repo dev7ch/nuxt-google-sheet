@@ -10,7 +10,7 @@
         https://nuxt-google-sheet.netlify.com/component/?range=pizza!A1:D17
       </a>
     </p>
-    <div id="chart-default" style="margin-top: 60px">
+    <div id="chart-default" style="margin: 60px auto 120px auto">
       <p>
         Do hard reload if you have an CORS issue.
       </p>
@@ -146,6 +146,14 @@ export default {
 
       this.$c3.generate({
         bindto: "#chart-default",
+        size: {
+          height: 580
+        },
+        padding: {
+          right: 100,
+          bottom: 200,
+          left: 100
+        },
         data: {
           json: [...this.c3Objects],
           keys: {
@@ -160,12 +168,16 @@ export default {
             type: "category",
             categories: arrays,
             tick: {
-              format: "%m-%d",
+              culling: true,
               fit: true,
-              multiline: false,
-              culling: {
-                max: arrays.length // or whatever value you need
-              }
+              format: name => {
+                return "🍕 " + arrays[name]
+              },
+              //width: 300,
+              multiline: false
+              // culling: {
+              //   //max: arrays.length // or whatever value you need
+              // }
             }
           }
         }
@@ -175,3 +187,6 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+@import "../assets/scss/helpers";
+</style>
