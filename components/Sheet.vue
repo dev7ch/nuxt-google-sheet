@@ -150,9 +150,9 @@ export default {
           height: 580
         },
         padding: {
-          right: 100,
+          right: 20,
           bottom: 200,
-          left: 100
+          left: 25
         },
         data: {
           json: [...this.c3Objects],
@@ -162,22 +162,25 @@ export default {
           },
           type: "bar"
         },
-
+        bar: {
+          width: {
+            ratio: 0.33
+          }
+        },
         axis: {
           x: {
             type: "category",
             categories: arrays,
             tick: {
-              culling: true,
               fit: true,
               format: name => {
                 return "🍕 " + arrays[name]
               },
               //width: 300,
-              multiline: false
-              // culling: {
-              //   //max: arrays.length // or whatever value you need
-              // }
+              multiline: false,
+              culling: {
+                max: arrays.length * 2 // or whatever value you need
+              }
             }
           }
         }
