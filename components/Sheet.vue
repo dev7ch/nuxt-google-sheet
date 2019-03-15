@@ -1,7 +1,7 @@
 <template>
   <div class="component">
     <h1 style="margin-bottom: 15px">
-      Play with Public Sheets API
+      Dynamic Chart with Public Google Sheets API
     </h1>
 
     <p>
@@ -165,7 +165,8 @@ export default {
 
           types: {
             deliciousness: "area",
-            healthiness: "spline"
+            healthiness: "spline",
+            price: "area-step"
           }
         },
         bar: {
@@ -176,6 +177,10 @@ export default {
 
         axis: {
           x: {
+            // padding: {
+            //   left: 10,
+            //   right: 10
+            // },
             type: "category",
             categories: arrays,
             width: 0.5,

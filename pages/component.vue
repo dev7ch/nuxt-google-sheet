@@ -11,6 +11,7 @@ export default {
   components: {
     Sheet
   },
+  watchQuery: true,
 
   mounted() {
     console.log(this.$route.query.range)
