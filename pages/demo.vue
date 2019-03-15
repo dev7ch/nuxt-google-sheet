@@ -1,21 +1,34 @@
 <template>
-  <div class="page">
-    <h3>Simple Pizza Chart</h3>
-    <div id="pizza-chart" />
+  <div class="container container--width">
+    <div class="demo" style="margin: 60px auto">
+      <h3 style="padding-bottom: 60px">
+        Single Bar Chart
+      </h3>
+      <div id="pizza-chart" />
 
-    <template v-if="!!$route.query.debug">
-      <h3>Simple C3 Chart Test</h3>
-      <div id="result-chart" />
-      <h3>Demo Chart</h3>
-      <div id="demo-chart" />
-
-      <h3>Imported External csv file</h3>
-      <pre v-if="csvData">
-      <div v-for="(v, key) in csvData" :key="key">
-            {{ v }}
+      <div
+        class="links"
+        style="width: 300px; text-align:center; margin: 60px auto"
+      >
+        <a href="/component?range=pizza" class="button--grey btn">
+          Dynamic Component
+        </a>
       </div>
-    </pre>
-    </template>
+
+      <template v-if="!!$route.query.debug">
+        <h3>Simple C3 Chart Test</h3>
+        <div id="result-chart" />
+        <h3>Demo Chart</h3>
+        <div id="demo-chart" />
+
+        <h3>Imported External csv file</h3>
+        <pre v-if="csvData">
+          <span v-for="(v, key) in csvData" :key="key">
+                {{ v }}
+          </span>
+        </pre>
+      </template>
+    </div>
   </div>
 </template>
 <script>
@@ -27,15 +40,6 @@ export default {
       csvData: []
     }
   },
-
-  watchQuery: true,
-
-  // asyncData(context) {
-  //   context.$axios.$get(sheetUrl).then(res => {
-  //     context.$store.commit
-  //     return co
-  // },
-
   beforeMount() {
     // Simple Chart test
 

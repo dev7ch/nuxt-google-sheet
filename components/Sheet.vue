@@ -1,16 +1,6 @@
 <template>
   <div class="component">
-    <h1 style="margin-bottom: 15px">
-      Play with Public Sheets API
-    </h1>
-
-    <p>
-      Enter the range in the URL, e.g.
-      <a href="/component/?range=pizza%21A1%3AD17">
-        https://nuxt-google-sheet.netlify.com/component/?range=pizza!A1:D17
-      </a>
-    </p>
-    <div id="chart-default" style="margin: 60px auto">
+    <div id="chart-default">
       <p>
         Do hard reload if you have an CORS issue.
       </p>
@@ -121,14 +111,13 @@ export default {
       let arrays = cols.map(col => col.name)
       let _this = this
       let labels = Object.keys(cols[0])
+      // String fields to remove from legend
+      let forDeletion = ["name", "toppings"]
 
       Object.keys(cols).forEach(function(key) {
         console.log(arrays[key].toString(), cols[key])
         _this.c3Arrays[arrays[key]] = cols[key]
       })
-
-      // Fields to remove from legend
-      let forDeletion = ["name", "toppings"]
 
       cols = cols.filter(item => !forDeletion.includes(item))
       this.$c3.generate({
@@ -161,6 +150,8 @@ export default {
             type: "category",
             categories: arrays,
             tick: {
+              format: "%m-%d",
+              fit: true,
               multiline: false,
               culling: {
                 max: arrays.length // or whatever value you need

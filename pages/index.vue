@@ -10,7 +10,7 @@
       </h2>
       <div class="links">
         <a href="/demo" target="_blank" class="button--green btn">
-          Demo
+          Single Bar Chart
         </a>
         <a
           href="https://github.com/dev7ch/nuxt-google-sheet"
