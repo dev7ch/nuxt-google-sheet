@@ -1,6 +1,16 @@
 <template>
   <div class="component">
-    <div id="chart-default">
+    <h1 style="margin-bottom: 15px">
+      Play with Public Sheets API
+    </h1>
+
+    <p>
+      Enter the range in the URL, e.g.
+      <a href="/component/?range=pizza%21A1%3AD17">
+        https://nuxt-google-sheet.netlify.com/component/?range=pizza!A1:D17
+      </a>
+    </p>
+    <div id="chart-default" style="margin-top: 60px">
       <p>
         Do hard reload if you have an CORS issue.
       </p>
