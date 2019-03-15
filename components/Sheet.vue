@@ -11,17 +11,8 @@
         Do hard reload if you have an CORS issue.
       </p>
     </div>
-    <template v-if="c3Arrays.length > 0">
-      <div v-for="item in c3Arrays" :id="'chart-' + item.name" :key="item.name">
-        <div :id="'chart-' + item.name">
-          <p>
-            {{ item.name }}
-          </p>
-        </div>
-      </div>
-    </template>
 
-    {{ c3Arrays.length }}
+    {{ c3Objects.length }}
 
     <h1>Play with Public Sheets API</h1>
     <pre>
@@ -65,11 +56,6 @@ export default {
   created() {
     this.getSheetInfo()
     this.getSheetData()
-  },
-
-  mounted() {
-    //console.log(this.sheetData)
-    this.initChart()
   },
 
   methods: {
@@ -117,94 +103,60 @@ export default {
 
       let arrays = cols.map(col => col.name)
       let _this = this
+      let labels = Object.keys(cols[0])
 
       Object.keys(cols).forEach(function(key) {
-        //console.log(arrays[key], cols[key])
         console.log(arrays[key].toString(), cols[key])
         _this.c3Arrays[arrays[key]] = cols[key]
       })
+      //
+      // this.$c3.generate({
+      //   bindto: "#chart-marinara",
+      //   data: {
+      //     json: [...this.c3Objects],
+      //     keys: {
+      //       //                x: 'name', // it's possible to specify 'x' when category axis
+      //       value: labels
+      //     },
+      //     type: "pie",
+      //     axis: {
+      //       x: {
+      //         type: "category",
+      //         //categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
+      //         label: { text: "Années", position: "outer-center" }
+      //       }
+      //     }
+      //   }
+      // })
 
-      // console.log(this.c3Arrays)
-      // console.log(this.c3Objects)
-      console.log(arrays)
-      console.log(...this.c3Objects)
-      let labels = Object.keys(cols[0])
       console.log(labels)
-
-      this.$c3.generate({
-        bindto: "#chart-marinara",
-        data: {
-          json: [...this.c3Objects],
-          keys: {
-            //                x: 'name', // it's possible to specify 'x' when category axis
-            value: labels
-          },
-          type: "pie",
-          axis: {
-            x: {
-              type: "category",
-              //categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
-              label: { text: "Années", position: "outer-center" }
-            }
-          }
-        }
-      })
 
       this.$c3.generate({
         bindto: "#chart-default",
         data: {
           json: [...this.c3Objects],
           keys: {
-            y: labels[1], // it's possible to specify 'x' when category axis
+            x: this.c3Objects.name,
+            //y: labels[1], // it's possible to specify 'x' when category axis
             value: labels
           },
-          type: "bar",
+          type: "bar"
+        },
 
-          axis: {
-            y: {
-              type: "name",
-              //categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
-              label: { text: "Années", position: "outer-center" }
-            }
-          },
-          types: {
-            data3: "spline",
-            data4: "line",
-            data6: "area"
-          },
-          groups: [[labels[2], [labels[3]]]]
-        }
-      })
-
-      console.log(this.c3Arrays)
-    },
-
-    initChart() {
-      //let arrays = this.c3Arrays
-      //
-      // for (let i = 0; i < arrays.length; i++) {
-      //   let id = "#chart-" + arrays[i][0].toString()
-      //   console.log(id)
-      //   console.log(arrays[i])
-      //   console.log(obj[i])
-      // }
-
-      if (this.$store.state.component.pizza) {
-        this.$c3.generate({
-          bindto: "#chart-marinara",
-          data: {
-            columns: [["data1", 30], ["data2", 120]],
-            type: "pie",
-            axis: {
-              x: {
-                type: "category",
-                categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
-                label: { text: "Années", position: "outer-center" }
+        axis: {
+          x: {
+            type: "category",
+            categories: arrays,
+            tick: {
+              multiline: false,
+              culling: {
+                max: arrays.length // or whatever value you need
               }
             }
           }
-        })
-      }
+        }
+      })
+      // console.log(arrays)
     }
   }
 }
