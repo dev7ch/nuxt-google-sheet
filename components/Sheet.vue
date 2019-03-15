@@ -152,7 +152,8 @@ export default {
         padding: {
           right: 20,
           bottom: 200,
-          left: 25
+          left: 30,
+          top: 30
         },
         data: {
           json: [...this.c3Objects],
