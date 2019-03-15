@@ -3,14 +3,14 @@
     transition: transform .15s ease-in-out, fill .25s ease-in-out;
     fill: darkorange;
     text-anchor: start !important;
-    transform: rotate(90deg) translate(20px, -10px) !important;
+    transform: rotate(90deg) translate(20px, -12px) !important;
   }
 
   @media screen and (min-width: 1480px) {
     text {
       fill: black;
       text-anchor: middle !important;
-      transform: rotate(0) translate(0, 10px) !important;
+      transform: rotate(0) translate(0, 12px) !important;
     }
   }
 
@@ -18,7 +18,7 @@
     text {
       fill: green;
       text-anchor: start !important;
-      transform: rotate(90deg) translate(20px, -10px) !important;
+      transform: rotate(90deg) translate(20px, -12px) !important;
     }
 
     @media screen and (min-width: 1480px) {

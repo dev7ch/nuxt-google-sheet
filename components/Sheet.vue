@@ -168,14 +168,13 @@ export default {
             healthiness: "spline"
           }
         },
-        // bar: {
-        //   width: {
-        //     ratio: 0.6125
-        //   }
-        // },
+        bar: {
+          width: {
+            ratio: 0.6125
+          }
+        },
 
         axis: {
-          tickSize: ["0", "0"],
           x: {
             type: "category",
             categories: arrays,
@@ -185,17 +184,13 @@ export default {
               format: name => {
                 return "🍕 " + arrays[name]
               },
-              //width: 300,
               multiline: false,
               culling: {
-                max: arrays.length * 2 // or whatever value you need
+                max: arrays.length * 2
               }
             }
           }
         }
-        // legend: {
-        //   show: false
-        // }
       })
       // console.log(arrays)
     }

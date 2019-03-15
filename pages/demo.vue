@@ -20,7 +20,6 @@
         <div id="result-chart" />
         <h3>Demo Chart</h3>
         <div id="demo-chart" />
-
         <h3>Imported External csv file</h3>
         <pre v-if="csvData">
           <span v-for="(v, key) in csvData" :key="key">
@@ -41,18 +40,6 @@ export default {
     }
   },
   beforeMount() {
-    // Simple Chart test
-
-    this.$c3.generate({
-      bindto: "#result-chart",
-      data: {
-        columns: [["data1", 30], ["data2", 120]],
-        type: "pie"
-      }
-    })
-  },
-
-  mounted() {
     console.log(this.csvData)
     this.getCsvData(sheetUrl)
 
@@ -65,6 +52,15 @@ export default {
       .then(() => {
         this.$c3.generate({
           bindto: "#pizza-chart",
+          size: {
+            height: 680
+          },
+          padding: {
+            right: 20,
+            bottom: 220,
+            left: 30,
+            top: 30
+          },
           data: {
             type: "bar",
             json: this.$store.state.csvArray,
@@ -75,7 +71,19 @@ export default {
           },
           axis: {
             x: {
-              type: "category"
+              type: "category",
+              //categories: arrays,
+              width: 0.5,
+              tick: {
+                fit: true,
+                // format: x => {
+                //   return "🍕 " + x
+                // },
+                multiline: false,
+                culling: {
+                  max: 32
+                }
+              }
             }
           },
           bar: {
@@ -85,31 +93,31 @@ export default {
           }
         })
       })
-    this.$c3.generate({
-      bindto: "#demo-chart",
-      data: {
-        type: "bar",
-        json: [
-          { indicator: "X", total: 100 },
-          { indicator: "Y", total: 200 },
-          { indicator: "Z", total: 300 }
-        ],
-        keys: {
-          x: "indicator",
-          value: ["total"]
-        }
-      },
-      axis: {
-        x: {
-          type: "category"
-        }
-      },
-      bar: {
-        width: {
-          ratio: 0.5
-        }
-      }
-    })
+    // this.$c3.generate({
+    //   bindto: "#demo-chart",
+    //   data: {
+    //     type: "bar",
+    //     json: [
+    //       { indicator: "X", total: 100 },
+    //       { indicator: "Y", total: 200 },
+    //       { indicator: "Z", total: 300 }
+    //     ],
+    //     keys: {
+    //       x: "indicator",
+    //       value: ["total"]
+    //     }
+    //   },
+    //   axis: {
+    //     x: {
+    //       type: "category"
+    //     }
+    //   },
+    //   bar: {
+    //     width: {
+    //       ratio: 0.5
+    //     }
+    //   }
+    // })
   },
 
   methods: {
@@ -123,3 +131,6 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+@import "../assets/scss/helpers";
+</style>
