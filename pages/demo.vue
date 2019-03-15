@@ -50,17 +50,7 @@ export default {
 
   mounted() {
     console.log(this.csvData)
-
     this.getCsvData(sheetUrl)
-    // this.prepareData(this.csvData)
-    // console.log(this.csvObj)
-    //
-
-    // // useing .env file
-    // this.$d3.csv(process.env.GOOGLE_CSV_SHEET_URL, data => {
-    //   this.csvData.push(data)
-    //   console.log(this.csvData)
-    // })
 
     this.$d3
       .csv(sheetUrl, data => {

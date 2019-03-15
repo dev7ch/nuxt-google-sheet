@@ -1,8 +1,31 @@
 <template>
-  <div>
+  <div class="component">
+    <div id="chart-default">
+      <p>
+        Do hard reload if you have an CORS issue.
+      </p>
+    </div>
+
+    <div id="chart-marinara">
+      <p>
+        Do hard reload if you have an CORS issue.
+      </p>
+    </div>
+    <template v-if="c3Arrays.length > 0">
+      <div v-for="item in c3Arrays" :id="'chart-' + item.name" :key="item.name">
+        <div :id="'chart-' + item.name">
+          <p>
+            {{ item.name }}
+          </p>
+        </div>
+      </div>
+    </template>
+
+    {{ c3Arrays.length }}
+
     <h1>Play with Public Sheets API</h1>
     <pre>
-      {{ sheetData }}
+      {{ sheetData.values }}
     </pre>
     <template v-if="$route.query.debug === 'true'">
       <h3>Sheet Info</h3>
@@ -20,6 +43,7 @@
 
 const sheetUrl = process.env.GOOGLE_SHEET_API
 const key = "?key=" + process.env.GOOGLE_SHEET_KEY
+const _ = require("lodash")
 
 export default {
   props: {
@@ -32,19 +56,19 @@ export default {
   data() {
     return {
       sheetInfo: null,
-      sheetData: null,
-      articles: []
+      sheetData: {},
+      c3Objects: {},
+      c3Arrays: []
     }
   },
 
-  beforeMount() {
+  created() {
     this.getSheetInfo()
     this.getSheetData()
   },
 
   mounted() {
-    console.log(this.articles)
-    console.log(this.$store.state)
+    //console.log(this.sheetData)
     this.initChart()
   },
 
@@ -60,19 +84,127 @@ export default {
       let _this = this
       let range =
         this.$props.params !== null ? this.$props.params : "pizza!A1:C17"
-      await this.$axios.$get(sheetUrl + "/values/" + range + key).then(res => {
-        _this.sheetData = res
+      await this.$axios
+        .$get(sheetUrl + "/values/" + range + key)
+        .then(res => {
+          _this.sheetData = res
+        })
+        .then(() => {
+          _this.prepareData(_this.sheetData.values)
+        })
+    },
+
+    prepareData($data) {
+      let headings = $data.shift()
+      let cols = []
+      let names = []
+
+      for (const i in $data) {
+        cols.push(_.zipObject(headings, $data[i]))
+      }
+
+      for (let n = 0; n < 1; n++) {
+        names.push(Object.keys(cols[n]))
+      }
+
+      console.log(cols)
+      console.log("names", names)
+      console.log("names", names.length)
+      console.log("names", names)
+
+      this.c3Objects = cols
+      this.$store.commit("setComponent", { pizza: cols })
+
+      let arrays = cols.map(col => col.name)
+      let _this = this
+
+      Object.keys(cols).forEach(function(key) {
+        //console.log(arrays[key], cols[key])
+        console.log(arrays[key].toString(), cols[key])
+        _this.c3Arrays[arrays[key]] = cols[key]
       })
+
+      // console.log(this.c3Arrays)
+      // console.log(this.c3Objects)
+      console.log(arrays)
+      console.log(...this.c3Objects)
+      let labels = Object.keys(cols[0])
+      console.log(labels)
+
+      this.$c3.generate({
+        bindto: "#chart-marinara",
+        data: {
+          json: [...this.c3Objects],
+          keys: {
+            //                x: 'name', // it's possible to specify 'x' when category axis
+            value: labels
+          },
+          type: "pie",
+          axis: {
+            x: {
+              type: "category",
+              //categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
+              label: { text: "Années", position: "outer-center" }
+            }
+          }
+        }
+      })
+
+      this.$c3.generate({
+        bindto: "#chart-default",
+        data: {
+          json: [...this.c3Objects],
+          keys: {
+            y: labels[1], // it's possible to specify 'x' when category axis
+            value: labels
+          },
+          type: "bar",
+
+          axis: {
+            y: {
+              type: "name",
+              //categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
+              label: { text: "Années", position: "outer-center" }
+            }
+          },
+          types: {
+            data3: "spline",
+            data4: "line",
+            data6: "area"
+          },
+          groups: [[labels[2], [labels[3]]]]
+        }
+      })
+
+      console.log(this.c3Arrays)
     },
 
     initChart() {
-      this.$c3.generate({
-        bindto: "#result-chart",
-        data: {
-          columns: [["data1", 30], ["data2", 120]],
-          type: "pie"
-        }
-      })
+      //let arrays = this.c3Arrays
+      //
+      // for (let i = 0; i < arrays.length; i++) {
+      //   let id = "#chart-" + arrays[i][0].toString()
+      //   console.log(id)
+      //   console.log(arrays[i])
+      //   console.log(obj[i])
+      // }
+
+      if (this.$store.state.component.pizza) {
+        this.$c3.generate({
+          bindto: "#chart-marinara",
+          data: {
+            columns: [["data1", 30], ["data2", 120]],
+            type: "pie",
+            axis: {
+              x: {
+                type: "category",
+                categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
+                label: { text: "Années", position: "outer-center" }
+              }
+            }
+          }
+        })
+      }
     }
   }
 }
