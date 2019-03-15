@@ -1,9 +1,14 @@
 <template>
   <div class="component">
-    <h1>Play with Public Sheets API</h1>
+    <h1 style="margin-bottom: 15px">
+      Play with Public Sheets API
+    </h1>
 
     <p>
-      Enter the range in the URL
+      Enter the range in the URL, e.g.
+      <a href="/component/?range=pizza%21A1%3AD17">
+        https://nuxt-google-sheet.netlify.com/component/?range=pizza!A1:D17
+      </a>
     </p>
     <div id="chart-default" style="margin: 60px auto">
       <p>
@@ -21,8 +26,12 @@
       </p>
     </div>
     <pre>
-    Found {{ c3Objects.length }} Objects.
+      Found {{ c3Objects.length }} Objects.
     </pre>
+    <pre>
+      Append <b>?debug=true</b> to
+      see more in dev mode.
+    <pre>
     <template v-if="$route.query.debug === 'true'">
       <h3>Sheet Data</h3>
       <pre v-if="params">
@@ -33,6 +42,7 @@
       {{ sheetInfo }}
       </pre>
     </template>
+  </pre></pre>
   </div>
 </template>
 
@@ -116,22 +126,20 @@ export default {
         console.log(arrays[key].toString(), cols[key])
         _this.c3Arrays[arrays[key]] = cols[key]
       })
+
+      // Fields to remove from legend
+      let forDeletion = ["name", "toppings"]
+
+      cols = cols.filter(item => !forDeletion.includes(item))
       this.$c3.generate({
         bindto: "#chart-marinara",
         data: {
-          json: [...this.c3Objects],
+          json: [...cols],
           keys: {
             // x: 'name', // it's possible to specify 'x' when category axis
-            value: labels
+            value: labels.filter(item => !forDeletion.includes(item))
           },
-          type: "pie",
-          axis: {
-            x: {
-              type: "category",
-              //categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
-              label: { text: "Années", position: "outer-center" }
-            }
-          }
+          type: "donut"
         }
       })
 
@@ -144,7 +152,7 @@ export default {
           keys: {
             x: this.c3Objects.name,
             //y: labels[1], // it's possible to specify 'x' when category axis
-            value: labels
+            value: labels.filter(item => !forDeletion.includes(item))
           },
           type: "bar"
         },
