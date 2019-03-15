@@ -33,7 +33,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ["./node_modules/c3/c3.min.css"],
 
   /*
    ** Plugins to load before mounting the App

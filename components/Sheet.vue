@@ -161,17 +161,25 @@ export default {
             x: this.c3Objects.name,
             value: labels.filter(item => !forDeletion.includes(item))
           },
-          type: "bar"
-        },
-        bar: {
-          width: {
-            ratio: 0.33
+          type: "bar",
+
+          types: {
+            deliciousness: "area",
+            healthiness: "spline"
           }
         },
+        // bar: {
+        //   width: {
+        //     ratio: 0.6125
+        //   }
+        // },
+
         axis: {
+          tickSize: ["0", "0"],
           x: {
             type: "category",
             categories: arrays,
+            width: 0.5,
             tick: {
               fit: true,
               format: name => {
@@ -185,6 +193,9 @@ export default {
             }
           }
         }
+        // legend: {
+        //   show: false
+        // }
       })
       // console.log(arrays)
     }
