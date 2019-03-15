@@ -1,24 +1,33 @@
 <template>
   <div class="component">
-    <div id="chart-default">
-      <p>
-        Do hard reload if you have an CORS issue.
-      </p>
-    </div>
-
-    <div id="chart-marinara">
-      <p>
-        Do hard reload if you have an CORS issue.
-      </p>
-    </div>
-
-    {{ c3Objects.length }}
-
     <h1>Play with Public Sheets API</h1>
+
+    <p>
+      Enter the range in the URL
+    </p>
+    <div id="chart-default" style="margin: 60px auto">
+      <p>
+        Do hard reload if you have an CORS issue.
+      </p>
+    </div>
+
+    <h2 v-if="!!sheetData.values" style="text-align: center">
+      {{ sheetData.values[0][0] }}
+    </h2>
+
+    <div id="chart-marinara" style="margin: 30px auto">
+      <p>
+        Do hard reload if you have an CORS issue.
+      </p>
+    </div>
     <pre>
-      {{ sheetData.values }}
+    Found {{ c3Objects.length }} Objects.
     </pre>
     <template v-if="$route.query.debug === 'true'">
+      <h3>Sheet Data</h3>
+      <pre v-if="params">
+      {{ sheetData }}
+      </pre>
       <h3>Sheet Info</h3>
       <pre v-if="params">
       {{ sheetInfo }}
@@ -70,14 +79,18 @@ export default {
       let _this = this
       let range =
         this.$props.params !== null ? this.$props.params : "pizza!A1:C17"
-      await this.$axios
-        .$get(sheetUrl + "/values/" + range + key)
-        .then(res => {
-          _this.sheetData = res
-        })
-        .then(() => {
-          _this.prepareData(_this.sheetData.values)
-        })
+      try {
+        await this.$axios
+          .$get(sheetUrl + "/values/" + range + key)
+          .then(res => {
+            _this.sheetData = res
+          })
+          .then(() => {
+            _this.prepareData(_this.sheetData.values)
+          })
+      } catch (e) {
+        return false
+      }
     },
 
     prepareData($data) {
@@ -92,12 +105,6 @@ export default {
       for (let n = 0; n < 1; n++) {
         names.push(Object.keys(cols[n]))
       }
-
-      console.log(cols)
-      console.log("names", names)
-      console.log("names", names.length)
-      console.log("names", names)
-
       this.c3Objects = cols
       this.$store.commit("setComponent", { pizza: cols })
 
@@ -109,25 +116,24 @@ export default {
         console.log(arrays[key].toString(), cols[key])
         _this.c3Arrays[arrays[key]] = cols[key]
       })
-      //
-      // this.$c3.generate({
-      //   bindto: "#chart-marinara",
-      //   data: {
-      //     json: [...this.c3Objects],
-      //     keys: {
-      //       //                x: 'name', // it's possible to specify 'x' when category axis
-      //       value: labels
-      //     },
-      //     type: "pie",
-      //     axis: {
-      //       x: {
-      //         type: "category",
-      //         //categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
-      //         label: { text: "Années", position: "outer-center" }
-      //       }
-      //     }
-      //   }
-      // })
+      this.$c3.generate({
+        bindto: "#chart-marinara",
+        data: {
+          json: [...this.c3Objects],
+          keys: {
+            // x: 'name', // it's possible to specify 'x' when category axis
+            value: labels
+          },
+          type: "pie",
+          axis: {
+            x: {
+              type: "category",
+              //categories: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
+              label: { text: "Années", position: "outer-center" }
+            }
+          }
+        }
+      })
 
       console.log(labels)
 

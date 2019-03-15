@@ -23,6 +23,10 @@ By appending `?debug=true` or `?range=pizza&debug=true` in `dev` mode you ll get
 
 http://localhost:3000/demo?debug=true
 
+or 
+ 
+http://localhost:3000/component?range=pizza&debug=true
+
 ## Build Setup
 
 ``` bash
