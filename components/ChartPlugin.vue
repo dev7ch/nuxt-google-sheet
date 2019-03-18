@@ -1,5 +1,4 @@
 <!-- Source: https://github.com/ignoreintuition/v-chart-plugin/blob/master/src/components/chartExample.vue  -->
-
 <template>
   <div class="container">
     <div class="row">
@@ -9,53 +8,48 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-6 col-md-4">
-          <div v-for="(t, index) in sales" :key="t.id">
-            <input v-model.number="sales[index].total" type="number" />
-            <input
-              v-model="sales[index]"
-              type="text"
-              value="[-]"
-              @click="removeItem(index, $event)"
-            >
+      <no-ssr>
+        <div class="row">
+          <div class="form-group col-6 col-md-4">
+            <div v-for="(t, index) in sales" :key="t.id">
+              <input v-model.number="sales[index].total" type="number" />
+              <button
+                type="text"
+                value="[-]"
+                @click="removeItem(index, $event)"
+              />
+            </div>
+            <button @click="newItem">
+              add
+            </button>
           </div>
-          <button @click="newItem">
-            [+]
-          </button>
-        </div>
-        <div class="col-6 col-md-8">
-          <div class="row">
-            <div class="col-12">
-              <v-chart :chart-data="lineGraphData" />
-            </div>
-            <div class="col-12">
-              <v-chart :chart-data="areaChartData" />
-            </div>
-            <div class="col-12">
-              <v-chart :chart-data="bubbleChartData" />
-            </div>
-            <div class="col-12">
-              <v-chart :chart-data="vBarChartData" />
-            </div>
-            <div class="col-12">
-              <v-chart :chart-data="barChartData" />
-            </div>
-            <div class="col-12">
-              <v-chart :chart-data="pieChartData" />
-            </div>
-            <div class="col-12">
-              <v-chart :chart-data="scatterPlotData" />
+          <div class="col-6 col-md-8">
+            <div class="row">
+              <div class="col-12">
+                <v-chart :chart-data="lineGraphData" />
+              </div>
+              <div class="col-12">
+                <v-chart :chart-data="areaChartData" />
+              </div>
+              <div class="col-12">
+                <v-chart :chart-data="bubbleChartData" />
+              </div>
+              <div class="col-12">
+                <v-chart :chart-data="vBarChartData" />
+              </div>
+              <div class="col-12">
+                <v-chart :chart-data="barChartData" />
+              </div>
+              <div class="col-12">
+                <v-chart :chart-data="pieChartData" />
+              </div>
+              <div class="col-12">
+                <v-chart :chart-data="scatterPlotData" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <a href="https://github.com/ignoreintuition/v-chart-plugin"
-        ><img
-          style="position: absolute; top: 0; right: 0; border: 0;"
-          src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
-          alt="Fork me on GitHub"
-      /></a>
+      </no-ssr>
     </div>
   </div>
 </template>
