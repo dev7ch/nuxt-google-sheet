@@ -38,7 +38,10 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: "~/plugins/chart", ssr: false }],
+  plugins: [
+    { src: "~/plugins/chart", ssr: false },
+    { src: "~/plugins/chartPlugin", ssr: false }
+  ],
 
   /*
    ** Nuxt.js modules
@@ -64,6 +67,20 @@ export default {
    ** Build configuration
    */
   build: {
+    babel: {
+      presets: [
+        [
+          "@babel/preset-env",
+          {
+            useBuiltIns: false
+          }
+        ]
+      ],
+      plugins: [
+        ["@babel/plugin-transform-object-rest-spread", { proposal: "minimal" }],
+        ["@babel/plugin-transform-runtime"]
+      ]
+    },
     /*
      ** You can extend webpack config here
      */
