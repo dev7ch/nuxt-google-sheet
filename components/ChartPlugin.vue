@@ -7,13 +7,12 @@
 
       <template v-if="$store.state.component.plugin">
         <chart-radar v-if="showLine" :data="chartData" :options="options" />
-      </template>
-      <template v-if="$store.state.component.plugin">
-        <chart-line v-if="showLine" :data="chartData" :options="options" />
-      </template>
 
-      <template v-if="$store.state.component.plugin">
+        <chart-line v-if="showLine" :data="chartData" :options="options" />
+
         <chart-bar v-if="showLine" :data="chartData" :options="options" />
+
+        <chart-polar v-if="showLine" :data="chartData" :options="options" />
       </template>
     </div>
     <pre v-if="$route.query.debug === 'true'">
@@ -32,7 +31,7 @@ export default {
     },
     options: {
       type: Object,
-      defaultValue: ""
+      defaultValue: { responsive: true, maintainAspectRatio: false }
     },
     params: {
       type: String,
@@ -121,7 +120,7 @@ export default {
           data: _.map(cols, filteredLabels[m])
         })
       }
-      this.chartData.labels = this.$store.state.component.plugin.labels
+      this.chartData.labels = arrays
     },
 
     getRandomColor() {
