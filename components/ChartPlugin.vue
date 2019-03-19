@@ -7,6 +7,10 @@
       <template v-if="$store.state.component.plugin">
         <chart-line v-if="showLine" :data="chartData" :options="options" />
       </template>
+
+      <template v-if="$store.state.component.plugin">
+        <chart-bar v-if="showLine" :data="chartData" :options="options" />
+      </template>
     </div>
     <pre>
           {{ $store.state.component.plugin }}
@@ -95,30 +99,27 @@ export default {
         cols.push(_.zipObject(headings, $data[i]))
       }
       let arrays = cols.map(col => col.name)
-
-      let labels = Object.keys(cols[0])
       // String fields to remove from legend
-      // let forDeletion = ["name", "toppings"]
+      let forDeletion = ["name", "toppings"]
+      let labels = Object.keys(cols[0])
+      let filteredLabels = labels.filter(item => !forDeletion.includes(item))
+
+      //console.log(filtered)
 
       this.$store.commit("setComponent", {
         plugin: { cols, labels: arrays }
       })
 
-      for (let m = 0; m < labels.length; m++) {
+      for (let m = 0; m < filteredLabels.length; m++) {
         this.chartData.datasets.push({
-          label: labels[m],
-          data: _.map(cols, labels[m])
+          label: filteredLabels[m],
+          backgroundColor:
+            "#" +
+            (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6),
+          data: _.map(cols, filteredLabels[m])
         })
       }
       this.chartData.labels = this.$store.state.component.plugin.labels
-      //console.log(this.chartData.datasets)
-      // let labels = Object.keys(cols[0])
-      // // String fields to remove from legend
-      // let forDeletion = ["name", "toppings"]
-
-      // Object.keys(cols).forEach(function(k) {
-      //   this.chartData[arrays[k]] = cols[k]
-      // })
     }
   }
 }
