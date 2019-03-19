@@ -1,196 +1,125 @@
-<!-- Source: https://github.com/ignoreintuition/v-chart-plugin/blob/master/src/components/chartExample.vue  -->
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="row">
-        <div class="col">
-          <p>Hello</p>
-        </div>
-      </div>
-
-      <no-ssr>
-        <div class="row">
-          <div class="form-group col-6 col-md-4">
-            <div v-for="(t, index) in sales" :key="t.id">
-              <input v-model.number="sales[index].total" type="number" />
-              <button
-                type="text"
-                value="[-]"
-                @click="removeItem(index, $event)"
-              />
-            </div>
-            <button @click="newItem">
-              add
-            </button>
-          </div>
-          <div class="col-6 col-md-8">
-            <div class="row">
-              <div class="col-12">
-                <v-chart :chart-data="lineGraphData" />
-              </div>
-              <div class="col-12">
-                <v-chart :chart-data="areaChartData" />
-              </div>
-              <div class="col-12">
-                <v-chart :chart-data="bubbleChartData" />
-              </div>
-              <div class="col-12">
-                <v-chart :chart-data="vBarChartData" />
-              </div>
-              <div class="col-12">
-                <v-chart :chart-data="barChartData" />
-              </div>
-              <div class="col-12">
-                <v-chart :chart-data="pieChartData" />
-              </div>
-              <div class="col-12">
-                <v-chart :chart-data="scatterPlotData" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </no-ssr>
+  <div class="row">
+    <div class="container container--width">
+      <h1 v-if="!!sheetInfo.properties">
+        {{ sheetInfo.properties.title }}
+      </h1>
+      <template v-if="$store.state.component.plugin">
+        <chart-line v-if="showLine" :data="chartData" :options="options" />
+      </template>
     </div>
+    <pre>
+          {{ $store.state.component.plugin }}
+    </pre>
   </div>
 </template>
 
 <script>
-import sales from "../assets/data/sales"
-
+const _ = require("lodash")
 export default {
-  name: "BarChartExample",
+  props: {
+    data: {
+      type: Object,
+      defaultValue: null
+    },
+    options: {
+      type: Object,
+      defaultValue: ""
+    },
+    params: {
+      type: String,
+      defaultValue: ""
+    }
+  },
+
   data() {
     return {
-      sales: sales,
-      areaChartData: {
-        chartType: "areaChart",
-        selector: "areaChart",
-        title: "Area Chart",
-        width: 600,
-        height: 500,
-        metric: ["total"],
-        dim: "month",
-        data: sales,
-        legends: {
-          enabled: true,
-          height: 25,
-          width: 50
-        }
-      },
-      bubbleChartData: {
-        chartType: "bubbleChart",
-        selector: "bubbleChart",
-        title: "Bubble Chart",
-        subtitle: "Sales by month",
-        width: 600,
-        height: 500,
-        dim: "month",
-        grid: {
-          enabled: true
-        },
-        metric: ["total", "forecast", "yoy"],
-        data: sales,
-        goal: 500
-      },
-      lineGraphData: {
-        chartType: "lineGraph",
-        selector: "lineGraph",
-        title: "Line Graph",
-        subtitle: "Sales by month",
-        width: 600,
-        height: 500,
-        goal: 600,
-        metric: ["total", "forecast"],
-        dim: "month",
-        data: sales,
-        label: true,
-        legends: {
-          enabled: true,
-          height: 25,
-          width: 50
-        },
-        overrides: {
-          palette: {
-            fill: ["#34495E", "#4fc08d"],
-            stroke: "#41B883"
-          }
-        }
-      },
-      vBarChartData: {
-        chartType: "vBarChart",
-        selector: "vChart",
-        title: "Bar Chart",
-        subtitle: "Sales by month",
-        width: 600,
-        height: 500,
-        metric: ["total", "forecast"],
-        dim: "month",
-        data: sales,
-        legends: {
-          enabled: true,
-          height: 25,
-          width: 50
-        }
-      },
-      barChartData: {
-        chartType: "barChart",
-        selector: "barChart",
-        title: "Bar Chart",
-        subtitle: "Sales by month",
-        width: 600,
-        height: 500,
-        metric: ["total", "forecast"],
-        dim: "month",
-        data: sales,
-        label: true
-      },
-      pieChartData: {
-        chartType: "pieChart",
-        selector: "pieChart",
-        title: "Pie Chart",
-        subtitle: "Sales by month",
-        width: 600,
-        height: 500,
-        metric: "total",
-        dim: "month",
-        data: sales
-      },
-      scatterPlotData: {
-        chartType: "scatterPlot",
-        selector: "scatterPlot",
-        title: "Scatter Plot",
-        subtitle: "Sales by month",
-        width: 600,
-        height: 500,
-        dim: "month",
-        label: {
-          enabled: true
-        },
-        metric: ["total", "forecast"],
-        data: sales
+      showLine: false,
+      sheetInfo: {},
+      chartData: {
+        labels: [],
+        datasets: []
       }
     }
   },
+
+  created() {
+    this.getSheetInfo()
+    this.getSheetData()
+  },
+  mounted() {
+    console.log(this.sheetInfo)
+    this.showLine = true // showLine will only be set to true on the client. This keeps the DOM-tree in sync.
+  },
+
   methods: {
-    newItem: function() {
-      this.sales.push({
-        month: null,
-        year: null,
-        total: null,
-        actual: false
-      })
+    async getSheetInfo() {
+      let _this = this
+      await this.$axios
+        .$get(
+          process.env.GOOGLE_SHEET_API + "?key=" + process.env.GOOGLE_SHEET_KEY
+        )
+        .then(res => {
+          _this.sheetInfo = res
+        })
     },
-    removeItem: function(d, e) {
-      e.preventDefault()
-      this.sales.splice(d, 1)
+
+    async getSheetData() {
+      let _this = this
+      let range = "pizza!A1:H17"
+      try {
+        await this.$axios
+          .$get(
+            process.env.GOOGLE_SHEET_API +
+              "/values/" +
+              range +
+              "?key=" +
+              process.env.GOOGLE_SHEET_KEY
+          )
+          .then(res => {
+            _this.sheetData = res
+          })
+          .then(() => {
+            _this.prepareData(_this.sheetData.values)
+          })
+      } catch (e) {
+        return console.log("Error: ", e.message)
+      }
+    },
+
+    prepareData($data) {
+      let headings = $data.shift()
+      let cols = []
+
+      for (const i in $data) {
+        cols.push(_.zipObject(headings, $data[i]))
+      }
+      let arrays = cols.map(col => col.name)
+
+      let labels = Object.keys(cols[0])
+      // String fields to remove from legend
+      // let forDeletion = ["name", "toppings"]
+
+      this.$store.commit("setComponent", {
+        plugin: { cols, labels: arrays }
+      })
+
+      for (let m = 0; m < labels.length; m++) {
+        this.chartData.datasets.push({
+          label: labels[m],
+          data: _.map(cols, labels[m])
+        })
+      }
+      this.chartData.labels = this.$store.state.component.plugin.labels
+      //console.log(this.chartData.datasets)
+      // let labels = Object.keys(cols[0])
+      // // String fields to remove from legend
+      // let forDeletion = ["name", "toppings"]
+
+      // Object.keys(cols).forEach(function(k) {
+      //   this.chartData[arrays[k]] = cols[k]
+      // })
     }
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-.logo {
-  width: 200px;
-}
-</style>

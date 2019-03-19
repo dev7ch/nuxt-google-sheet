@@ -66,9 +66,7 @@ export default {
   /*
    ** Build configuration
    */
-  runtimeCompiler: true,
   build: {
-    runtimeCompiler: true,
     babel: {
       presets: [
         [
@@ -79,7 +77,7 @@ export default {
         ]
       ],
       plugins: [
-        ["@babel/plugin-proposal-object-rest-spread"],
+        // ["@babel/plugin-proposal-object-rest-spread"],
         ["@babel/plugin-transform-runtime"],
         ["@babel/plugin-syntax-dynamic-import"]
       ]
