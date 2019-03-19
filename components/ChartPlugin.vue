@@ -113,13 +113,21 @@ export default {
       for (let m = 0; m < filteredLabels.length; m++) {
         this.chartData.datasets.push({
           label: filteredLabels[m],
-          backgroundColor:
-            "#" +
-            (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6),
+          backgroundColor: this.getRandomColor(),
           data: _.map(cols, filteredLabels[m])
         })
       }
       this.chartData.labels = this.$store.state.component.plugin.labels
+    },
+
+    getRandomColor() {
+      let trans = "0.5" // 50% transparency
+      let color = "rgba("
+      for (var i = 0; i < 3; i++) {
+        color += Math.floor(Math.random() * 255) + ","
+      }
+      color += trans + ")" // add the transparency
+      return color
     }
   }
 }
