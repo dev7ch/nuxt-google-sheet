@@ -4,6 +4,10 @@
       <h1 v-if="!!sheetInfo.properties">
         {{ sheetInfo.properties.title }}
       </h1>
+
+      <template v-if="$store.state.component.plugin">
+        <chart-radar v-if="showLine" :data="chartData" :options="options" />
+      </template>
       <template v-if="$store.state.component.plugin">
         <chart-line v-if="showLine" :data="chartData" :options="options" />
       </template>
@@ -12,7 +16,7 @@
         <chart-bar v-if="showLine" :data="chartData" :options="options" />
       </template>
     </div>
-    <pre>
+    <pre v-if="$route.query.debug === 'true'">
           {{ $store.state.component.plugin }}
     </pre>
   </div>
@@ -87,7 +91,7 @@ export default {
             _this.prepareData(_this.sheetData.values)
           })
       } catch (e) {
-        return console.log("Error: ", e.message)
+        return console.log("Error in getSheetData(): ", e.message)
       }
     },
 
