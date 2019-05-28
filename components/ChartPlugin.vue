@@ -73,7 +73,7 @@ export default {
 
     async getSheetData() {
       let _this = this
-      let range = "pizza!A1:H17"
+      let range = "pizza!A1:J18"
       try {
         await this.$axios
           .$get(
