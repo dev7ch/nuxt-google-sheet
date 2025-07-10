@@ -7,15 +7,15 @@
 Define the Range in the url like, for the full range:
 
 
-https://nuxt-google-sheet.netlify.com/component/?range=pizza
+https://nuxt-google-sheet.netlify.app/component/?range=pizza
 
 ... and if you need specific ranges:
 
-https://nuxt-google-sheet.netlify.com/component/?range=pizza%21A1%3AC5
+https://nuxt-google-sheet.netlify.app/component/?range=pizza%21A1%3AC5
 
 A simple public csv url without google API and no API key can be done like that:
 
-https://nuxt-google-sheet.netlify.com/demo
+https://nuxt-google-sheet.netlify.app/demo
 
 ## Debug mode
 
